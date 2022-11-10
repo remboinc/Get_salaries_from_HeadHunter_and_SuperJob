@@ -16,23 +16,18 @@ def get_salary(hh_api_url):
         if response is None:
             continue
         elif response is not None:
-            return response
-
-
-def referferf(response):
-    avg_salary = []
-    for salary in response.json()['items']:
-        if salary is None:
-            continue
-        elif salary['salary'] is not None:
-            avg_salary.append(salary['salary'])
-    return avg_salary
+            avg_salary = []
+            for salary in response.json()['items']:
+                if salary is None:
+                    continue
+                elif salary['salary'] is not None:
+                    avg_salary.append(salary['salary'])
+            return avg_salary
 
 
 def get_avrg_salary(avg_salary):
     avg_salaries = []
     for salary in avg_salary:
-        print(salary)
         if salary['currency'] == 'RUR':
             if salary['from'] and salary['to']:
                 avg_python_salary = (int(salary['from']) + int(salary['to'])) / 2
@@ -44,10 +39,10 @@ def get_avrg_salary(avg_salary):
                 avg_python_salary = int(salary['to']) * 0.8
                 avg_salaries.append(avg_python_salary)
                 fgg = sum(avg_salaries) / len(avg_salaries)
-                print(fgg)
+                return fgg
         else:
             continue
-    return fgg
+
 
 
 def found_vacancies(hh_api_url, fgg, avg_salary):
@@ -75,13 +70,10 @@ def found_vacancies(hh_api_url, fgg, avg_salary):
 
 def main():
     hh_api_url = 'https://api.hh.ru/vacancies/'
-    response = get_salary(hh_api_url)
 
-    while True:
-        avg_salary = get_salary(hh_api_url)
-        referferf(response)
-        fgg = get_avrg_salary(avg_salary)
-        print(found_vacancies(hh_api_url, fgg, avg_salary))
+    avg_salary = get_salary(hh_api_url)
+    fgg = get_avrg_salary(avg_salary)
+    print(found_vacancies(hh_api_url, fgg, avg_salary))
 
 
 if __name__ == '__main__':
