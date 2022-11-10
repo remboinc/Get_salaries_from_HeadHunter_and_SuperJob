@@ -25,7 +25,7 @@ def get_salary(hh_api_url):
             return salaries
 
 
-def find_average_salary(salaries):
+def find_all_salaries(salaries):
     average_salaries = []
     for salary in salaries:
         if salary['currency'] == 'RUR':
@@ -40,14 +40,11 @@ def find_average_salary(salaries):
                 average_salaries.append(avg_python_salary)
         else:
             continue
-    return average_salaries
+    all_salaries = int(sum(average_salaries) / len(average_salaries))
+    return all_salaries
 
-def erjfnjrf(average_salaries):
-    fgg = sum(average_salaries) / len(average_salaries)
-    fgg = int(fgg)
-    return fgg
 
-def found_vacancies(hh_api_url, fgg, salaries):
+def found_vacancies(hh_api_url, all_salaries, salaries):
     vacancies_found = {}
     average_salary = {}
     vacancies_processed = {}
@@ -62,7 +59,7 @@ def found_vacancies(hh_api_url, fgg, salaries):
         response.raise_for_status()
         response_hh = response.json()['found']
         vacancies_found['vacancies_found'] = response_hh
-        average_salary['average_salary'] = fgg
+        average_salary['average_salary'] = all_salaries
         vacancies_processed['vacancies_processed'] = len(salaries)
         vacancies_found.update(average_salary)
         vacancies_found.update(vacancies_processed)
@@ -74,9 +71,8 @@ def main():
     hh_api_url = 'https://api.hh.ru/vacancies/'
 
     salaries = get_salary(hh_api_url)
-    average_salaries = find_average_salary(salaries)
-    fgg = erjfnjrf(average_salaries)
-    print(found_vacancies(hh_api_url, fgg, salaries))
+    all_salaries = find_all_salaries(salaries)
+    found_vacancies(hh_api_url, all_salaries, salaries)
 
 
 if __name__ == '__main__':
