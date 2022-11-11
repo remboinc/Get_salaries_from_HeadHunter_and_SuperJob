@@ -4,6 +4,7 @@ PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', '
 
 
 def get_salary(hh_api_url):
+    salaries = []
     for language in PROGRAMMING_LANGUAGES:
         params = {
             'specializations': 'программист',
@@ -13,16 +14,14 @@ def get_salary(hh_api_url):
         }
         response = requests.get(hh_api_url, params=params)
         response.raise_for_status()
-        if response is None:
-            continue
-        elif response is not None:
-            salaries = []
-            for salary in response.json()['items']:
-                if salary is None:
-                    continue
-                elif salary['salary'] is not None:
-                    salaries.append(salary['salary'])
-            return salaries
+        spisik_vakansi = []
+        spisik_vakansi.append(response.json())
+        for vak in spisik_vakansi:
+            for items in vak['items']:
+                if items['salary'] is not None:
+                    salaries.append(items['salary'])
+        return salaries
+
 
 
 def find_all_salaries(salaries):
