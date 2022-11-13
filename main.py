@@ -2,7 +2,9 @@ import requests
 
 PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#', 'C')
 
-def get_request():
+
+def get_salary(hh_api_url):
+    all_salaries = []
     for language in PROGRAMMING_LANGUAGES:
         params = {
             'specializations': 'программист',
@@ -12,10 +14,6 @@ def get_request():
         }
         response = requests.get(hh_api_url, params=params)
         response.raise_for_status()
-        return response
-
-def get_salary(hh_api_url):
-    all_salaries = []
         spisik_vakansi = [response.json()]
         for vak in spisik_vakansi:
             print(vak)
@@ -27,7 +25,6 @@ def get_salary(hh_api_url):
             all_salaries.append(salaries)
 
     return all_salaries
-
 
 
 def find_all_salaries(all_salaries):
@@ -55,15 +52,15 @@ def found_vacancies(hh_api_url, all_avrg_salaries, all_salaries):
     vacancies_found = {}
     average_salary = {}
     vacancies_processed = {}
-    # for language in PROGRAMMING_LANGUAGES:
-    #     params = {
-    #         'specializations': 'программист',
-    #         'text': language,
-    #         'area': '1',
-    #         'period': '30'
-    #     }
-    #     response = requests.get(hh_api_url, params=params)
-    #     response.raise_for_status()
+    for language in PROGRAMMING_LANGUAGES:
+        params = {
+            'specializations': 'программист',
+            'text': language,
+            'area': '1',
+            'period': '30'
+        }
+        response = requests.get(hh_api_url, params=params)
+        response.raise_for_status()
         response_hh = response.json()['found']
         vacancies_found['vacancies_found'] = response_hh
         vacancies_processed['vacancies_processed'] = len(all_salaries)
@@ -80,7 +77,6 @@ def main():
     all_salaries = get_salary(hh_api_url)
     all_avrg_salaries = find_all_salaries(all_salaries)
     found_vacancies(hh_api_url, all_avrg_salaries, all_salaries)
-
 
 
 if __name__ == '__main__':
