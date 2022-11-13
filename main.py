@@ -4,7 +4,7 @@ PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', '
 
 
 def get_salary(hh_api_url):
-    salaries = []
+    all_salaries = []
     for language in PROGRAMMING_LANGUAGES:
         params = {
             'specializations': 'программист',
@@ -14,36 +14,42 @@ def get_salary(hh_api_url):
         }
         response = requests.get(hh_api_url, params=params)
         response.raise_for_status()
-        spisik_vakansi = []
-        spisik_vakansi.append(response.json())
+        spisik_vakansi = [response.json()]
         for vak in spisik_vakansi:
+            print(vak)
+            salaries = []
             for items in vak['items']:
                 if items['salary'] is not None:
-                    salaries.append(items['salary'])
-        return salaries
+                    salary = items['salary']
+                    salaries.append(salary)
+            all_salaries.append(salaries)
 
-
-
-def find_all_salaries(salaries):
-    average_salaries = []
-    for salary in salaries:
-        if salary['currency'] == 'RUR':
-            if salary['from'] and salary['to']:
-                avg_python_salary = (int(salary['from']) + int(salary['to'])) / 2
-                average_salaries.append(avg_python_salary)
-            elif salary['from']:
-                avg_python_salary = int(salary['from']) * 1.2
-                average_salaries.append(avg_python_salary)
-            elif salary['to']:
-                avg_python_salary = int(salary['to']) * 0.8
-                average_salaries.append(avg_python_salary)
-        else:
-            continue
-    all_salaries = int(sum(average_salaries) / len(average_salaries))
     return all_salaries
 
 
-def found_vacancies(hh_api_url, all_salaries, salaries):
+
+def find_all_salaries(all_salaries):
+    average_salaries = []
+    for salary in all_salaries:
+        for lang in salary:
+            if lang['currency'] == 'RUR':
+                if lang['from'] and lang['to']:
+                    avg_python_salary = (int(lang['from']) + int(lang['to'])) / 2
+                    average_salaries.append(avg_python_salary)
+                elif lang['from']:
+                    avg_python_salary = int(lang['from']) * 1.2
+                    average_salaries.append(avg_python_salary)
+                elif lang['to']:
+                    avg_python_salary = int(lang['to']) * 0.8
+                    average_salaries.append(avg_python_salary)
+            else:
+                continue
+    all_avrg_salaries = int(sum(average_salaries) / len(average_salaries))
+    print(average_salaries)
+    return all_avrg_salaries
+
+
+def found_vacancies(hh_api_url, all_avrg_salaries, all_salaries):
     vacancies_found = {}
     average_salary = {}
     vacancies_processed = {}
@@ -58,8 +64,9 @@ def found_vacancies(hh_api_url, all_salaries, salaries):
         response.raise_for_status()
         response_hh = response.json()['found']
         vacancies_found['vacancies_found'] = response_hh
-        average_salary['average_salary'] = all_salaries
-        vacancies_processed['vacancies_processed'] = len(salaries)
+        vacancies_processed['vacancies_processed'] = len(all_salaries)
+        average_salary['average_salary'] = all_avrg_salaries
+
         vacancies_found.update(average_salary)
         vacancies_found.update(vacancies_processed)
         d2 = {language: vacancies_found}
@@ -68,10 +75,10 @@ def found_vacancies(hh_api_url, all_salaries, salaries):
 
 def main():
     hh_api_url = 'https://api.hh.ru/vacancies/'
+    all_salaries = get_salary(hh_api_url)
+    all_avrg_salaries = find_all_salaries(all_salaries)
+    found_vacancies(hh_api_url, all_avrg_salaries, all_salaries)
 
-    salaries = get_salary(hh_api_url)
-    all_salaries = find_all_salaries(salaries)
-    found_vacancies(hh_api_url, all_salaries, salaries)
 
 
 if __name__ == '__main__':
