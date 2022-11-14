@@ -4,7 +4,8 @@ PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', '
 
 
 def get_salaries(hh_api_url):
-    all_salaries = []
+    all_salaries = {}
+
     for language in PROGRAMMING_LANGUAGES:
         params = {
             'specializations': 'программист',
@@ -21,11 +22,13 @@ def get_salaries(hh_api_url):
                 if items['salary'] is not None:
                     salary = items['salary']
                     salaries.append(salary)
-            all_salaries.append(salaries)
-    return all_salaries
+                    all_salaries[language] = salaries
+            print(all_salaries)
+            return all_salaries
 
 
 def find_average_salaries(all_salaries):
+    print(all_salaries)
     average_salaries = []
     for salary in all_salaries:
         for lang in salary:
