@@ -23,6 +23,7 @@ def get_salaries(hh_api_url):
                     salary = items['salary']
                     salaries.append(salary)
                     all_salaries[language] = salaries
+            print(len(salaries))
             print(all_salaries)
             return all_salaries
 
