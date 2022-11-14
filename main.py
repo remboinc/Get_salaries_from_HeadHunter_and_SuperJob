@@ -14,8 +14,8 @@ def get_salary(hh_api_url):
         }
         response = requests.get(hh_api_url, params=params)
         response.raise_for_status()
-        spisik_vakansi = [response.json()]
-        for vak in spisik_vakansi:
+        list_of_vacancies = [response.json()]
+        for vak in list_of_vacancies:
             print(vak)
             salaries = []
             for items in vak['items']:
