@@ -65,10 +65,8 @@ def found_vacancies(hh_api_url, all_avrg_salaries, all_salaries):
         vacancies_found['vacancies_found'] = response_hh
         vacancies_processed['vacancies_processed'] = len(all_salaries)
         average_salary['average_salary'] = all_avrg_salaries
-
-        vacancies_found.update(average_salary)
-        vacancies_found.update(vacancies_processed)
-        d2 = {language: vacancies_found}
+        d2 = {**vacancies_found, **vacancies_processed, **average_salary}
+        d2 = {language: d2}
         print(d2)
 
 
