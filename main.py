@@ -30,11 +30,9 @@ def get_response_json(hh_api_url):
 
 
 def how_much_vacancies(responses):
-    x = 0
     vacancies_found = {}
     for language in PROGRAMMING_LANGUAGES:
         how_much = responses[language]['found']
-        x += 1
         vacancies_found.update({language: how_much})
     return vacancies_found
 
@@ -56,12 +54,8 @@ def get_salaries(responses):
 def get_avg_salary(all_salaries):
     avg_for_lang = {}
     for language in PROGRAMMING_LANGUAGES:
-
         average_salaries = []
-        x = 0
         for el in all_salaries[language]:
-
-            x += 1
             if el['currency'] == 'RUR':
                 if el['from'] and el['to']:
                     avg_salary = (int(el['from']) + int(el['to'])) / 2
