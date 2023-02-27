@@ -2,7 +2,7 @@ from pprint import pprint
 from itertools import count
 import requests
 
-PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#', 'C')
+PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 
 
 def get_response_json(hh_api_url):
@@ -15,51 +15,48 @@ def get_response_json(hh_api_url):
                 'area': '1',
                 'period': '30',
                 'page': page,
+                'per_page': 100,
 
             }
 
             response = requests.get(hh_api_url, params=params)
             response.raise_for_status()
             response_json = response.json()
-            responses.update({language: response_json})
-            if page >= response_json['pages']:
+
+            if page == response_json['pages'] - 1:
                 break
+            responses.update({language: response_json})
     return responses
 
 
-
-
 def how_much_vacancies(responses):
-    pprint(responses)
-    vacancies_found = {}
     x = 0
+    vacancies_found = {}
     for language in PROGRAMMING_LANGUAGES:
         how_much = responses[language]['found']
-        vacancies_found.update({language: how_much})
         x += 1
+        vacancies_found.update({language: how_much})
     return vacancies_found
 
 
 def get_salaries(responses):
     all_salaries = {}
+
+    salaries = []
     for language in PROGRAMMING_LANGUAGES:
-        salaries = []
-        x = 0
+
         for items in responses[language]['items']:
             if items['salary'] is not None:
                 salary = items['salary']
                 salaries.append(salary)
                 all_salaries.update({language: salaries})
-                x += 1
     return all_salaries
 
 
-
-
 def get_avg_salary(all_salaries):
-    pprint(all_salaries)
     avg_for_lang = {}
     for language in PROGRAMMING_LANGUAGES:
+
         average_salaries = []
         x = 0
         for el in all_salaries[language]:
@@ -94,10 +91,12 @@ def predict_rub_salary(avg_for_lang, all_salaries, vacancies_found):
         value_of_vacancy = len(all_salaries[language])
         vacancies_processed.update({language: value_of_vacancy})
         salaries_for_each_language.update(
-            {language:
+            {
+                language:
                  {'vacancies_found': vacancies_found[language],
                   'vacancies_processed': vacancies_processed[language],
-                  'average_salary': average_salary[language]}}
+                  'average_salary': average_salary[language]}
+             }
         )
     return salaries_for_each_language
 
