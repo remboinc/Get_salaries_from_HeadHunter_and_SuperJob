@@ -16,13 +16,10 @@ def get_response_json(hh_api_url):
                 'period': '30',
                 'page': page,
                 'per_page': 100,
-
             }
-
             response = requests.get(hh_api_url, params=params)
             response.raise_for_status()
             response_json = response.json()
-
             if page == response_json['pages'] - 1:
                 break
             responses.update({language: response_json})
@@ -39,10 +36,8 @@ def how_much_vacancies(responses):
 
 def get_salaries(responses):
     all_salaries = {}
-
-    salaries = []
     for language in PROGRAMMING_LANGUAGES:
-
+        salaries = []
         for items in responses[language]['items']:
             if items['salary'] is not None:
                 salary = items['salary']
@@ -58,21 +53,17 @@ def get_avg_salary(all_salaries):
         for el in all_salaries[language]:
             if el['currency'] == 'RUR':
                 if el['from'] and el['to']:
-                    avg_salary = (int(el['from']) + int(el['to'])) / 2
+                    avg_salary = (el['from'] + el['to']) / 2
                     average_salaries.append(avg_salary)
-                    avg_for_lang.update({language: average_salaries})
                 elif el['from']:
-                    avg_salary = int(el['from']) * 1.2
+                    avg_salary = el['from'] * 1.2
                     average_salaries.append(avg_salary)
-                    avg_for_lang.update({language: average_salaries})
                 elif el['to']:
-                    avg_salary = int(el['to']) * 0.8
+                    avg_salary = el['to'] * 0.8
                     average_salaries.append(avg_salary)
-                    avg_for_lang.update({language: average_salaries})
-            else:
-                continue
         avf = int(sum(average_salaries) / len(average_salaries))
         avg_for_lang.update({language: avf})
+    pprint(avg_for_lang)
     return avg_for_lang
 
 
