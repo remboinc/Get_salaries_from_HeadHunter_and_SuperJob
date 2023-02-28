@@ -61,9 +61,8 @@ def get_avg_salary(all_salaries):
                 elif el['to']:
                     avg_salary = el['to'] * 0.8
                     average_salaries.append(avg_salary)
-        avf = int(sum(average_salaries) / len(average_salaries))
-        avg_for_lang.update({language: avf})
-    pprint(avg_for_lang)
+        average_calculation = int(sum(average_salaries) / len(average_salaries))
+        avg_for_lang.update({language: average_calculation})
     return avg_for_lang
 
 
