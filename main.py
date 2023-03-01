@@ -8,6 +8,7 @@ PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', '
 def get_response_json(hh_api_url):
     responses = {}
     for language in PROGRAMMING_LANGUAGES:
+        full_response = []
         for page in count(0):
             params = {
                 'specializations': 'программист',
@@ -22,15 +23,17 @@ def get_response_json(hh_api_url):
             response_json = response.json()
             if page == response_json['pages'] - 1:
                 break
-            responses.update({language: response_json})
+            full_response.append(response_json)
+            responses.update({language: full_response})
     return responses
 
 
 def how_much_vacancies(responses):
     vacancies_found = {}
     for language in PROGRAMMING_LANGUAGES:
-        how_much = responses[language]['found']
-        vacancies_found.update({language: how_much})
+        for vac in responses[language]:
+            how_much = vac['found']
+            vacancies_found.update({language: how_much})
     return vacancies_found
 
 
@@ -38,11 +41,13 @@ def get_salaries(responses):
     all_salaries = {}
     for language in PROGRAMMING_LANGUAGES:
         salaries = []
-        for items in responses[language]['items']:
-            if items['salary'] is not None:
-                salary = items['salary']
-                salaries.append(salary)
-                all_salaries.update({language: salaries})
+        for items in responses[language]:
+            items = items['items']
+            for salary in items:
+                if salary['salary'] is not None:
+                    salary = salary['salary']
+                    salaries.append(salary)
+                    all_salaries.update({language: salaries})
     return all_salaries
 
 
