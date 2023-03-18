@@ -38,10 +38,19 @@ Clone the repository.
 git clone https://github.com/remboinc/Get_salaries_from_HeadHunter_and_SuperJob
 ```
 ### Installation and launch
+- Create a virtual environment on directory project:
+```
+python3.10 -m venv env
+```
+Start virtual environment:
+```
+.env/bin/activate
+```
 - Install dependencies from requirements.txt file.
 ```
 pip install -r requirements.txt
 ```
+
 - generate SECRET_KEY for SuperJob(https://api.superjob.ru).
 -  Add the ".env" file to the project folder and enter the following data:
 ```
