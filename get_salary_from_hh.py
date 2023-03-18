@@ -52,7 +52,7 @@ def get_salaries(responses):
 
 
 def get_avg_salary(all_salaries):
-    avg_for_lang = {}
+    avgarage_for_lang = {}
     for language in PROGRAMMING_LANGUAGES:
         average_salaries = []
         for el in all_salaries[language]:
@@ -67,16 +67,16 @@ def get_avg_salary(all_salaries):
                     avg_salary = el['to'] * 0.8
                     average_salaries.append(avg_salary)
         average_calculation = str(int(sum(average_salaries) / len(average_salaries)))
-        avg_for_lang.update({language: average_calculation})
-    return avg_for_lang
+        avgarage_for_lang.update({language: average_calculation})
+    return avgarage_for_lang
 
 
-def predict_rub_salary(avg_for_lang, all_salaries, vacancies_found):
+def predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found):
     salaries_for_each_language = {}
     average_salary = {}
     vacancies_processed = {}
     for language in PROGRAMMING_LANGUAGES:
-        average_salary.update(avg_for_lang)
+        average_salary.update(avgarage_for_lang)
         value_of_vacancy = str(len(all_salaries[language]))
         vacancies_processed.update({language: value_of_vacancy})
         salaries_for_each_language.update(
@@ -95,8 +95,8 @@ def predict_rub_salary(avg_for_lang, all_salaries, vacancies_found):
 responses = get_response_json()
 vacancies_found = how_much_vacancies(responses)
 all_salaries = get_salaries(responses)
-avg_for_lang = get_avg_salary(all_salaries)
-predict_rub_salary(avg_for_lang, all_salaries, vacancies_found)
+avgarage_for_lang = get_avg_salary(all_salaries)
+predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found)
 
 
 

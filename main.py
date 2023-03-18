@@ -1,6 +1,6 @@
 from terminaltables import AsciiTable
 from get_salary_from_superjob import *
-from get_salary_from_hh import predict_rub_salary, all_salaries, vacancies_found, avg_for_lang
+from get_salary_from_hh import predict_rub_salary, all_salaries, vacancies_found, avgarage_for_lang
 
 
 def print_salary_table(dict):
@@ -26,7 +26,7 @@ def print_salary_table(dict):
 
 def main():
     statistics_sj = AsciiTable(print_salary_table(get_salaries_for_each_language_sj(avg_for_lang, responses, apikey)), title='SuperJob Moscow')
-    statistics_hh = AsciiTable(print_salary_table(predict_rub_salary(avg_for_lang, all_salaries, vacancies_found)), title='hh.ru Moscow')
+    statistics_hh = AsciiTable(print_salary_table(predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found)), title='hh.ru Moscow')
     print(statistics_sj.table)
     print(statistics_hh.table)
 
