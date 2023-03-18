@@ -2,7 +2,7 @@
 ****
 ### Description
 The script get information on programmer vacancies from 
-HeadHunter and SuperJob sites for 8 popular programming languages. And finds the average salary for the selected programming languages.
+HeadHunter and SuperJob sites for 7 popular programming languages. And finds the average salary for the selected programming languages.
 
 Code Run Example:
 
