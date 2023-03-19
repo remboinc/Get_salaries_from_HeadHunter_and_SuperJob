@@ -5,13 +5,13 @@ from get_salary_from_hh import predict_rub_salary, all_salaries, vacancies_found
 
 def print_salary_table(dict):
     salary_table = []
-    table_data = [
+    table_headers = [
         'Язык программирования',
         'Вакансий найдено',
         'Вакансий обработано',
         'Средняя зарплата',
     ],
-    salary_table.extend(table_data)
+    salary_table.extend(table_headers)
     for lang, statistics in dict.items():
         temp_data = [[
 
