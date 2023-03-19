@@ -42,6 +42,7 @@ def get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey):
         sj_api_url = 'https://api.superjob.ru/2.0/vacancies/'
 
         response = requests.get(sj_api_url, headers=headers, params=params)
+        response.raise_for_status()
         response_json = response.json()
         response_len = len(all_pages[language])
         vacancies_found.update({language: response_json['total']})
@@ -77,6 +78,7 @@ def get_all_pages_sj(apikey):
         for page in count():
             params['page'] = page
             response = requests.get(sj_api_url, headers=headers, params=params)
+            response.raise_for_status()
             response_json = response.json()
             page_with_salary.append(response_json.get('objects'))
             all_pages.update({language: page_with_salary})
