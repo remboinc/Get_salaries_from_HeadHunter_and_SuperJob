@@ -59,18 +59,19 @@ def get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey):
 
 def get_all_pages_sj(apikey):
     all_pages = {}
+    search_text_block = 1
+    moscow = 4
+    list_of_industries_dir_sections = 48
     for language in PROGRAMMING_LANGUAGES:
         page_with_salary = []
         params = {
             "keyword": f"Программист {language}",
-            "srws": 1,
-            "town": 4,
-            "catalogues": 48,
+            "srws": search_text_block,
+            "town": moscow,
+            "catalogues": list_of_industries_dir_sections,
             "count": 10,
         }
-        headers = {
-            'X-Api-App-Id': apikey
-        }
+        headers = {'X-Api-App-Id': apikey}
         sj_api_url = 'https://api.superjob.ru/2.0/vacancies/'
 
         for page in count():
