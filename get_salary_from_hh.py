@@ -82,21 +82,22 @@ def predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found):
         salaries_for_each_language.update(
             {
                 language:
-                 {'vacancies_found': vacancies_found[language],
-                  'vacancies_processed': vacancies_processed[language],
-                  'average_salary': average_salary[language]},
-             }
+                    {'vacancies_found': vacancies_found[language],
+                     'vacancies_processed': vacancies_processed[language],
+                     'average_salary': average_salary[language]},
+            }
         )
     return salaries_for_each_language
 
 
+def main():
+    predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found)
 
 
-responses = get_response_json()
-vacancies_found = how_much_vacancies(responses)
-all_salaries = get_salaries(responses)
-avgarage_for_lang = get_avg_salary(all_salaries)
-predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found)
-
-
+if __name__ == '__main__':
+    responses = get_response_json()
+    vacancies_found = how_much_vacancies(responses)
+    all_salaries = get_salaries(responses)
+    avarage_for_lang = get_avg_salary(all_salaries)
+    main()
 

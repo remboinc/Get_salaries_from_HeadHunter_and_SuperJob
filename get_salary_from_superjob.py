@@ -57,7 +57,7 @@ def get_salaries_for_each_language_sj(avg_for_lang, responses, apikey):
     return salaries_for_each_language
 
 
-def get_response_sj():
+def get_response_sj(apikey):
     responses = {}
     for language in PROGRAMMING_LANGUAGES:
         full_response = []
@@ -69,7 +69,7 @@ def get_response_sj():
             "count": 10,
         }
         headers = {
-            'X-Api-App-Id': 'v3.r.14098314.9cdd8ad04aea76f5b6b9542561863d781201560a.a3af39ad5e008d5aed954a782f15f0fddf1619a1'
+            'X-Api-App-Id': apikey
         }
         sj_api_url = 'https://api.superjob.ru/2.0/vacancies/'
 
@@ -85,8 +85,13 @@ def get_response_sj():
     return responses
 
 
-load_dotenv()
-apikey = os.getenv('SJ_SECRET_KEY')
-responses = get_response_sj()
-avg_for_lang = predict_rub_salary_for_superjob(responses)
-get_salaries_for_each_language_sj(avg_for_lang, responses, apikey)
+def main():
+    load_dotenv()
+    get_salaries_for_each_language_sj(avg_for_lang, responses, apikey)
+
+
+if __name__ == '__main__':
+    apikey = os.getenv('SJ_SECRET_KEY')
+    responses = get_response_sj(apikey)
+    avg_for_lang = predict_rub_salary_for_superjob(responses)
+    main()
