@@ -5,10 +5,10 @@ PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', '
 
 
 def get_response_json():
-    responses = {}
+    all_pages = {}
     hh_api_url = 'https://api.hh.ru/vacancies/'
     for language in PROGRAMMING_LANGUAGES:
-        full_response = []
+        page_with_salary = []
         params = {
             'specializations': 'программист',
             'text': language,
@@ -23,15 +23,15 @@ def get_response_json():
             response_json = response.json()
             if page == response_json['pages'] - 1:
                 break
-            full_response.append(response_json)
-            responses.update({language: full_response})
-    return responses
+            page_with_salary.append(response_json)
+            all_pages.update({language: page_with_salary})
+    return all_pages
 
 
-def how_much_vacancies(responses):
+def how_much_vacancies(all_pages):
     vacancies_found = {}
     for language in PROGRAMMING_LANGUAGES:
-        for vac in responses[language]:
+        for vac in all_pages[language]:
             how_much = vac['found']
             vacancies_found.update({language: how_much})
     return vacancies_found
@@ -52,7 +52,7 @@ def get_salaries(responses):
 
 
 def get_avg_salary(all_salaries):
-    avgarage_for_lang = {}
+    avarage_for_lang = {}
     for language in PROGRAMMING_LANGUAGES:
         average_salaries = []
         for el in all_salaries[language]:
@@ -67,16 +67,16 @@ def get_avg_salary(all_salaries):
                     avg_salary = el['to'] * 0.8
                     average_salaries.append(avg_salary)
         average_calculation = str(int(sum(average_salaries) / len(average_salaries)))
-        avgarage_for_lang.update({language: average_calculation})
-    return avgarage_for_lang
+        avarage_for_lang.update({language: average_calculation})
+    return avarage_for_lang
 
 
-def predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found):
+def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found):
     salaries_for_each_language = {}
     average_salary = {}
     vacancies_processed = {}
     for language in PROGRAMMING_LANGUAGES:
-        average_salary.update(avgarage_for_lang)
+        average_salary.update(avarage_for_lang)
         value_of_vacancy = str(len(all_salaries[language]))
         vacancies_processed.update({language: value_of_vacancy})
         salaries_for_each_language.update(
@@ -91,13 +91,13 @@ def predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found):
 
 
 def main():
+    all_pages = get_response_json()
+    vacancies_found = how_much_vacancies(all_pages)
+    all_salaries = get_salaries(all_pages)
+    avarage_for_lang = get_avg_salary(all_salaries)
     predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found)
 
 
 if __name__ == '__main__':
-    responses = get_response_json()
-    vacancies_found = how_much_vacancies(responses)
-    all_salaries = get_salaries(responses)
-    avarage_for_lang = get_avg_salary(all_salaries)
     main()
 

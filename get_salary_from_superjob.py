@@ -6,11 +6,11 @@ from dotenv import load_dotenv
 PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 
 
-def predict_rub_salary_for_superjob(responses):
+def predict_rub_salary_for_superjob(all_pages):
     avg_for_lang = {}
     for language in PROGRAMMING_LANGUAGES:
         average_salaries = []
-        for vac in responses[language]:
+        for vac in all_pages[language]:
             for vacancies in vac:
                 payment_from = vacancies['payment_from']
                 payment_to = vacancies['payment_to']
@@ -26,7 +26,7 @@ def predict_rub_salary_for_superjob(responses):
     return avg_for_lang
 
 
-def get_salaries_for_each_language_sj(avg_for_lang, responses, apikey):
+def get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey):
     salaries_for_each_language = {}
     vacancies_found = {}
     vacancies_processed = {}
@@ -43,7 +43,7 @@ def get_salaries_for_each_language_sj(avg_for_lang, responses, apikey):
 
         response = requests.get(sj_api_url, headers=headers, params=params)
         response_json = response.json()
-        response_len = len(responses[language])
+        response_len = len(all_pages[language])
         vacancies_found.update({language: response_json['total']})
         vacancies_processed.update({language: response_len})
         salaries_for_each_language.update(
@@ -58,9 +58,9 @@ def get_salaries_for_each_language_sj(avg_for_lang, responses, apikey):
 
 
 def get_response_sj(apikey):
-    responses = {}
+    all_pages = {}
     for language in PROGRAMMING_LANGUAGES:
-        full_response = []
+        page_with_salary = []
         params = {
             "keyword": f"Программист {language}",
             "srws": 1,
@@ -77,21 +77,21 @@ def get_response_sj(apikey):
             params.update({"page": page})
             response = requests.get(sj_api_url, headers=headers, params=params)
             response_json = response.json()
-            full_response.append(response_json.get('objects'))
-            responses.update({language: full_response})
+            page_with_salary.append(response_json.get('objects'))
+            all_pages.update({language: page_with_salary})
 
             if not response_json['more']:
                 break
-    return responses
+    return all_pages
 
 
 def main():
     load_dotenv()
-    get_salaries_for_each_language_sj(avg_for_lang, responses, apikey)
+    apikey = os.getenv('SJ_SECRET_KEY')
+    all_pages = get_response_sj(apikey)
+    avg_for_lang = predict_rub_salary_for_superjob(all_pages)
+    get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey)
 
 
 if __name__ == '__main__':
-    apikey = os.getenv('SJ_SECRET_KEY')
-    responses = get_response_sj(apikey)
-    avg_for_lang = predict_rub_salary_for_superjob(responses)
     main()
