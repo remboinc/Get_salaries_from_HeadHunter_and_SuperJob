@@ -25,10 +25,14 @@ def print_salary_table(dict):
 
 
 def main():
-    statistics_sj = AsciiTable(print_salary_table(get_salaries_for_each_language_sj(avg_for_lang, responses, apikey)), title='SuperJob Moscow')
-    statistics_hh = AsciiTable(print_salary_table(predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found)), title='hh.ru Moscow')
-    print(statistics_sj.table)
-    print(statistics_hh.table)
+    script_for_sj = get_salaries_for_each_language_sj(avg_for_lang, responses, apikey)
+    script_for_hh = predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found)
+    statistics_sj = print_salary_table(script_for_sj)
+    statistics_hh = print_salary_table(script_for_hh)
+    sj_table = AsciiTable(statistics_sj, title='SuperJob Moscow')
+    hh_table = AsciiTable(statistics_hh, title='hh.ru Moscow')
+    print(sj_table.table)
+    print(hh_table.table)
 
 
 if __name__ == '__main__':
