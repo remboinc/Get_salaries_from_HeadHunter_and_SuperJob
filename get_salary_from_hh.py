@@ -4,7 +4,7 @@ import requests
 PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 
 
-def get_response_json():
+def get_all_pages_hh():
     all_pages = {}
     hh_api_url = 'https://api.hh.ru/vacancies/'
     for language in PROGRAMMING_LANGUAGES:
@@ -91,7 +91,7 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found):
 
 
 def main():
-    all_pages = get_response_json()
+    all_pages = get_all_pages_hh()
     vacancies_found = how_much_vacancies(all_pages)
     all_salaries = get_salaries(all_pages)
     avarage_for_lang = get_avg_salary(all_salaries)

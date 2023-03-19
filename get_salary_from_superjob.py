@@ -57,7 +57,7 @@ def get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey):
     return salaries_for_each_language
 
 
-def get_response_sj(apikey):
+def get_all_pages_sj(apikey):
     all_pages = {}
     for language in PROGRAMMING_LANGUAGES:
         page_with_salary = []
@@ -88,7 +88,7 @@ def get_response_sj(apikey):
 def main():
     load_dotenv()
     apikey = os.getenv('SJ_SECRET_KEY')
-    all_pages = get_response_sj(apikey)
+    all_pages = get_all_pages_sj(apikey)
     avg_for_lang = predict_rub_salary_for_superjob(all_pages)
     get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey)
 
