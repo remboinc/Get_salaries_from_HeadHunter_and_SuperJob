@@ -22,7 +22,7 @@ def predict_rub_salary_for_superjob(all_pages):
                     elif payment_to:
                         average_salaries.append(payment_to * 0.8)
             average_calculation = int(sum(average_salaries) / len(average_salaries))
-            avg_for_lang.update({language: average_calculation})
+            avg_for_lang[language] = average_calculation
     return avg_for_lang
 
 
@@ -75,7 +75,7 @@ def get_all_pages_sj(apikey):
         sj_api_url = 'https://api.superjob.ru/2.0/vacancies/'
 
         for page in count():
-            params.update({"page": page})
+            params['page'] = page
             response = requests.get(sj_api_url, headers=headers, params=params)
             response_json = response.json()
             page_with_salary.append(response_json.get('objects'))
