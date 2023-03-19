@@ -3,7 +3,7 @@ from get_salary_from_superjob import *
 from get_salary_from_hh import predict_rub_salary, all_salaries, vacancies_found, avgarage_for_lang
 
 
-def print_salary_table(dict):
+def get_salary_table(dict):
     salary_table = []
     table_headers = [
         'Язык программирования',
@@ -27,8 +27,8 @@ def print_salary_table(dict):
 def main():
     script_for_sj = get_salaries_for_each_language_sj(avg_for_lang, responses, apikey)
     script_for_hh = predict_rub_salary(avgarage_for_lang, all_salaries, vacancies_found)
-    statistics_sj = print_salary_table(script_for_sj)
-    statistics_hh = print_salary_table(script_for_hh)
+    statistics_sj = get_salary_table(script_for_sj)
+    statistics_hh = get_salary_table(script_for_hh)
     sj_table = AsciiTable(statistics_sj, title='SuperJob Moscow')
     hh_table = AsciiTable(statistics_hh, title='hh.ru Moscow')
     print(sj_table.table)
