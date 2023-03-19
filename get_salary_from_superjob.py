@@ -43,9 +43,9 @@ def get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey):
 
         response = requests.get(sj_api_url, headers=headers, params=params)
         response.raise_for_status()
-        response_json = response.json()
+        vacancies = response.json()
         response_len = len(all_pages[language])
-        vacancies_found.update({language: response_json['total']})
+        vacancies_found.update({language: vacancies['total']})
         vacancies_processed.update({language: response_len})
         salaries_for_each_language.update(
             {
@@ -79,11 +79,11 @@ def get_all_pages_sj(apikey):
             params['page'] = page
             response = requests.get(sj_api_url, headers=headers, params=params)
             response.raise_for_status()
-            response_json = response.json()
-            page_with_salary.append(response_json.get('objects'))
+            vacancies = response.json()
+            page_with_salary.append(vacancies.get('objects'))
             all_pages.update({language: page_with_salary})
 
-            if not response_json['more']:
+            if not vacancies['more']:
                 break
     return all_pages
 

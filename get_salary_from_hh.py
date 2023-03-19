@@ -20,10 +20,10 @@ def get_all_pages_hh():
             params.update({"page": page})
             response = requests.get(hh_api_url, params=params)
             response.raise_for_status()
-            response_json = response.json()
-            if page == response_json['pages'] - 1:
+            vacancies = response.json()
+            if page == vacancies['pages'] - 1:
                 break
-            page_with_salary.append(response_json)
+            page_with_salary.append(vacancies)
             all_pages.update({language: page_with_salary})
     return all_pages
 
