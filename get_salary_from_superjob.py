@@ -10,8 +10,8 @@ def predict_rub_salary_for_superjob(all_pages):
     avg_for_lang = {}
     for language in PROGRAMMING_LANGUAGES:
         average_salaries = []
-        for vac in all_pages[language]:
-            for vacancies in vac:
+        for vacancy in all_pages[language]:
+            for vacancies in vacancy:
                 payment_from = vacancies['payment_from']
                 payment_to = vacancies['payment_to']
                 if vacancies['currency'] == 'rub':
