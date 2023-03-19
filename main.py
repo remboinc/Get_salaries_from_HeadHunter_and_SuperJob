@@ -1,5 +1,5 @@
 from terminaltables import AsciiTable
-from get_salary_from_superjob import *
+from get_salary_from_superjob import get_salaries_for_each_language_sj, avg_for_lang, responses, apikey
 from get_salary_from_hh import predict_rub_salary, all_salaries, vacancies_found, avgarage_for_lang
 
 
