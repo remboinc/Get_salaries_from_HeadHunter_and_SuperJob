@@ -1,11 +1,13 @@
 from itertools import count
+from pprint import pprint
+
 import requests
 
 PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 
 
-def get_all_pages_hh():
-    all_pages = {}
+def get_all_content_hh():
+    all_content = {}
     hh_api_url = 'https://api.hh.ru/vacancies/'
     for language in PROGRAMMING_LANGUAGES:
         page_with_salary = []
@@ -24,24 +26,25 @@ def get_all_pages_hh():
             if page == vacancies['pages'] - 1:
                 break
             page_with_salary.append(vacancies)
-            all_pages.update({language: page_with_salary})
-    return all_pages
+            all_content.update({language: page_with_salary})
+    return all_content
 
 
-def how_much_vacancies(all_pages):
+def how_much_vacancies(all_content):
     vacancies_found = {}
     for language in PROGRAMMING_LANGUAGES:
-        for vac in all_pages[language]:
-            how_much = vac['found']
+        for vaсancies in all_content[language]:
+            pprint(vaсancies)
+            how_much = vaсancies['found']
             vacancies_found.update({language: how_much})
     return vacancies_found
 
 
-def get_salaries(responses):
+def get_salaries(all_content):
     all_salaries = {}
     for language in PROGRAMMING_LANGUAGES:
         salaries = []
-        for items in responses[language]:
+        for items in all_content[language]:
             items = items['items']
             for salary in items:
                 if salary['salary'] is not None:
@@ -91,9 +94,9 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found):
 
 
 def main():
-    all_pages = get_all_pages_hh()
-    vacancies_found = how_much_vacancies(all_pages)
-    all_salaries = get_salaries(all_pages)
+    all_content = get_all_content_hh()
+    vacancies_found = how_much_vacancies(all_content)
+    all_salaries = get_salaries(all_content)
     avarage_for_lang = get_avg_salary(all_salaries)
     predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found)
 

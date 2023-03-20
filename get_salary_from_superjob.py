@@ -62,14 +62,14 @@ def get_all_pages_sj(apikey):
     all_pages = {}
     search_text_block = 1
     moscow = 4
-    list_of_industries_dir_sections = 48
+    industries_dir_sections = 48
     for language in PROGRAMMING_LANGUAGES:
         page_with_salary = []
         params = {
             "keyword": f"Программист {language}",
             "srws": search_text_block,
             "town": moscow,
-            "catalogues": list_of_industries_dir_sections,
+            "catalogues": industries_dir_sections,
             "count": 10,
         }
         headers = {'X-Api-App-Id': apikey}
