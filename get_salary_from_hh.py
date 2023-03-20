@@ -52,16 +52,15 @@ def get_avg_salary(all_salaries, language):
     avarage_for_lang = {}
     average_salaries = []
     for el in all_salaries[language]:
-        if el['currency'] == 'RUR':
-            if el['from'] and el['to']:
-                avg_salary = (el['from'] + el['to']) / 2
-                average_salaries.append(avg_salary)
-            elif el['from']:
-                avg_salary = el['from'] * 1.2
-                average_salaries.append(avg_salary)
-            elif el['to']:
-                avg_salary = el['to'] * 0.8
-                average_salaries.append(avg_salary)
+        if el['currency'] == 'RUR' and el['from'] and el['to']:
+            avg_salary = (el['from'] + el['to']) / 2
+            average_salaries.append(avg_salary)
+        elif el['from']:
+            avg_salary = el['from'] * 1.2
+            average_salaries.append(avg_salary)
+        elif el['to']:
+            avg_salary = el['to'] * 0.8
+            average_salaries.append(avg_salary)
     average_calculation = int(sum(average_salaries) / len(average_salaries))
     avarage_for_lang.update({language: average_calculation})
     return avarage_for_lang
