@@ -1,6 +1,5 @@
 from terminaltables import AsciiTable
-from Get_salaries_from_HeadHunter_and_SuperJob import get_salary_from_superjob
-from get_salary_from_hh import predict_rub_salary, get_avg_salary, how_much_vacancies, get_salaries, get_all_content_hh
+from Get_salaries_from_HeadHunter_and_SuperJob import get_salary_from_superjob, get_salary_from_hh
 
 PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 
@@ -26,13 +25,8 @@ def get_salary_table(dict):
 
 
 def main():
-    all_content = get_all_content_hh()
-    vacancies_found = how_much_vacancies(all_content)
-    all_salaries = get_salaries(all_content)
-    avarage_for_lang = get_avg_salary(all_salaries)
-
     script_for_sj = get_salary_from_superjob.main()
-    script_for_hh = predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found)
+    script_for_hh = get_salary_from_hh.main()
     statistics_sj = get_salary_table(script_for_sj)
     statistics_hh = get_salary_table(script_for_hh)
 
