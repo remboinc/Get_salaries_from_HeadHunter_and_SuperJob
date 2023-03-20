@@ -1,9 +1,8 @@
-import os
-from dotenv import load_dotenv
 from terminaltables import AsciiTable
-from get_salary_from_superjob import get_salaries_for_each_language_sj, predict_rub_salary_for_superjob, \
-    get_all_pages_sj
+from Get_salaries_from_HeadHunter_and_SuperJob import get_salary_from_superjob
 from get_salary_from_hh import predict_rub_salary, get_avg_salary, how_much_vacancies, get_salaries, get_all_content_hh
+
+PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 
 
 def get_salary_table(dict):
@@ -27,17 +26,12 @@ def get_salary_table(dict):
 
 
 def main():
-    load_dotenv()
-    apikey = os.getenv('SJ_SECRET_KEY')
-    all_pages = get_all_pages_sj(apikey)
-    avg_for_lang = predict_rub_salary_for_superjob(all_pages)
-
     all_content = get_all_content_hh()
     vacancies_found = how_much_vacancies(all_content)
     all_salaries = get_salaries(all_content)
     avarage_for_lang = get_avg_salary(all_salaries)
 
-    script_for_sj = get_salaries_for_each_language_sj(avg_for_lang, all_pages, apikey)
+    script_for_sj = get_salary_from_superjob.main()
     script_for_hh = predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found)
     statistics_sj = get_salary_table(script_for_sj)
     statistics_hh = get_salary_table(script_for_hh)
