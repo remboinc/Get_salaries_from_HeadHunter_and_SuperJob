@@ -1,5 +1,6 @@
 from terminaltables import AsciiTable
-from Get_salaries_from_HeadHunter_and_SuperJob import get_salary_from_superjob, get_salary_from_hh
+import get_salary_from_hh
+import get_salary_from_superjob
 
 PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 

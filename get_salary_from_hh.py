@@ -1,9 +1,6 @@
 from itertools import count
 import requests
 
-PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
-
-
 def get_all_content_hh(language):
     all_content = {}
     hh_api_url = 'https://api.hh.ru/vacancies/'
@@ -85,6 +82,7 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language
 
 
 def main():
+    PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
     all_salaries_hh = {}
     for language in PROGRAMMING_LANGUAGES:
         all_content = get_all_content_hh(language)
@@ -93,7 +91,4 @@ def main():
         avarage_for_lang = get_avg_salary(all_salaries, language)
         all_salaries_hh.update(predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language))
     return all_salaries_hh
-
-if __name__ == '__main__':
-    main()
 
