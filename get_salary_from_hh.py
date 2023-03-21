@@ -55,29 +55,23 @@ def get_avg_salary(all_salaries, language):
     return avg_for_lang
 
 
-def predict_rub_salary(avg_for_lang, all_salaries, vacancies_found, language):
-    salaries_for_each_language = {}
-    average_salary = {}
-    vacancies_processed = {}
-    average_salary.update(avg_for_lang)
-    value_of_vacancy = len(all_salaries[language])
-    vacancies_processed[language] = value_of_vacancy
-    salaries_for_each_language.update(
-        {
-            language:
-                {'vacancies_found': vacancies_found[language],
-                 'vacancies_processed': vacancies_processed[language],
-                 'average_salary': average_salary[language]},
-        }
-    )
-    return salaries_for_each_language
-
-
 def get_salary_from_hh():
     all_salaries_hh = {}
     for language in global_variables.PROGRAMMING_LANGUAGES:
         all_vacancies_from_hh = get_all_vacancies_hh(language)
         all_salaries, vacancies_found = get_salaries(all_vacancies_from_hh, language)
         avg_for_lang = get_avg_salary(all_salaries, language)
-        all_salaries_hh.update(predict_rub_salary(avg_for_lang, all_salaries, vacancies_found, language))
+        average_salary = {}
+        vacancies_processed = {}
+        average_salary.update(avg_for_lang)
+        value_of_vacancy = len(all_salaries[language])
+        vacancies_processed[language] = value_of_vacancy
+        all_salaries_hh.update(
+            {
+                language:
+                    {'vacancies_found': vacancies_found[language],
+                     'vacancies_processed': vacancies_processed[language],
+                     'average_salary': average_salary[language]},
+            }
+        )
     return all_salaries_hh
