@@ -27,8 +27,8 @@ def get_avg_for_lang(average_salaries, language):
     return avg_for_lang
 
 
-def get_all_pages_sj(apikey, language):
-    all_pages = {}
+def get_all_vacancies_sj(apikey, language):
+    all_vacancies = {}
     search_text_block = 1
     moscow = 4
     industries_dir_sections = 48
@@ -50,10 +50,10 @@ def get_all_pages_sj(apikey, language):
         vacancies = response.json()
         vacancies_found.update({language: vacancies.get('total')})
         page_with_salary.append(vacancies.get('objects'))
-        all_pages.update({language: page_with_salary})
+        all_vacancies.update({language: page_with_salary})
         if not vacancies['more']:
             break
-    return all_pages, vacancies_found
+    return all_vacancies, vacancies_found
 
 
 def collect_all_salaries(all_pages, vacancies_found, language, avg_for_lang):
@@ -78,7 +78,7 @@ def get_salary_from_sj():
 
     all_salaries_sj = {}
     for language in global_variables.PROGRAMMING_LANGUAGES:
-        all_pages, vacancies_found = get_all_pages_sj(apikey, language)
+        all_pages, vacancies_found = get_all_vacancies_sj(apikey, language)
         average_salaries = predict_rub_salary_for_superjob(all_pages, language)
         avg_for_lang = get_avg_for_lang(average_salaries, language)
         all_salaries_sj.update(collect_all_salaries(all_pages, vacancies_found, language, avg_for_lang))

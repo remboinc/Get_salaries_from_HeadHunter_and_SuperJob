@@ -4,7 +4,7 @@ import requests
 import global_variables
 
 
-def get_all_content_hh(language):
+def get_all_vacancies_hh(language):
     all_vacancies_from_hh = {}
     hh_api_url = 'https://api.hh.ru/vacancies/'
     page_with_salary = []
@@ -87,7 +87,7 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language
 def get_salary_from_hh():
     all_salaries_hh = {}
     for language in global_variables.PROGRAMMING_LANGUAGES:
-        all_vacancies_from_hh = get_all_content_hh(language)
+        all_vacancies_from_hh = get_all_vacancies_hh(language)
         vacancies_found = how_much_vacancies(all_vacancies_from_hh, language)
         all_salaries = get_salaries(all_vacancies_from_hh, language)
         avarage_for_lang = get_avg_salary(all_salaries, language)
