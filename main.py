@@ -1,6 +1,6 @@
 from terminaltables import AsciiTable
-import get_salary_from_hh
-import get_salary_from_superjob
+from get_salary_from_hh import get_salary_from_hh
+from get_salary_from_superjob import get_salary_from_sj
 
 
 def get_salary_table(dict):
@@ -24,10 +24,8 @@ def get_salary_table(dict):
 
 
 def main():
-    script_for_sj = get_salary_from_superjob.main()
-    script_for_hh = get_salary_from_hh.main()
-    statistics_sj = get_salary_table(script_for_sj)
-    statistics_hh = get_salary_table(script_for_hh)
+    statistics_sj = get_salary_table(get_salary_from_sj())
+    statistics_hh = get_salary_table(get_salary_from_hh())
 
     sj_table = AsciiTable(statistics_sj, title='SuperJob Moscow')
     hh_table = AsciiTable(statistics_hh, title='hh.ru Moscow')

@@ -1,6 +1,8 @@
 from itertools import count
+
 import requests
 import global_variables
+
 
 def get_all_content_hh(language):
     all_content = {}
@@ -82,7 +84,7 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language
     return salaries_for_each_language
 
 
-def main():
+def get_salary_from_hh():
     all_salaries_hh = {}
     for language in global_variables.PROGRAMMING_LANGUAGES:
         all_content = get_all_content_hh(language)
@@ -91,4 +93,3 @@ def main():
         avarage_for_lang = get_avg_salary(all_salaries, language)
         all_salaries_hh.update(predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language))
     return all_salaries_hh
-

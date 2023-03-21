@@ -72,7 +72,7 @@ def collect_all_salaries(all_pages, vacancies_found, language, avg_for_lang):
     return salaries_for_each_language
 
 
-def main():
+def get_salary_from_sj():
     load_dotenv()
     apikey = os.getenv('SJ_SECRET_KEY')
 
