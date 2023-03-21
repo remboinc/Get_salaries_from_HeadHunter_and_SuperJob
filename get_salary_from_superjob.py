@@ -3,6 +3,7 @@ from itertools import count
 import requests
 from dotenv import load_dotenv
 import global_variables
+from get_predict_salary import predict_salary, get_avg_for_lang
 
 
 def predict_rub_salary_for_superjob(all_pages, language):
@@ -11,20 +12,9 @@ def predict_rub_salary_for_superjob(all_pages, language):
         for vacancies in vacancy:
             payment_from = vacancies['payment_from']
             payment_to = vacancies['payment_to']
-            if vacancies['currency'] == 'rub' and payment_from and payment_to:
-                average_salaries.append((payment_from + payment_to) / 2)
-            elif payment_from:
-                average_salaries.append(payment_from * 1.2)
-            elif payment_to:
-                average_salaries.append(payment_to * 0.8)
+            if vacancies['currency'] == 'rub':
+                average_salaries.extend(predict_salary(payment_from, payment_to))
     return average_salaries
-
-
-def get_avg_for_lang(average_salaries, language):
-    avg_for_lang = {}
-    average_calculation = int(sum(average_salaries) / len(average_salaries))
-    avg_for_lang[language] = average_calculation
-    return avg_for_lang
 
 
 def get_all_vacancies_sj(apikey, language):
