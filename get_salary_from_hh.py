@@ -5,7 +5,7 @@ import global_variables
 
 
 def get_all_content_hh(language):
-    all_content = {}
+    all_vacancies_from_hh = {}
     hh_api_url = 'https://api.hh.ru/vacancies/'
     page_with_salary = []
     params = {
@@ -23,22 +23,22 @@ def get_all_content_hh(language):
         if page == vacancies['pages'] - 1:
             break
         page_with_salary.append(vacancies)
-        all_content.update({language: page_with_salary})
-    return all_content
+        all_vacancies_from_hh.update({language: page_with_salary})
+    return all_vacancies_from_hh
 
 
-def how_much_vacancies(all_content, language):
+def how_much_vacancies(all_vacancies_from_hh, language):
     vacancies_found = {}
-    for vaсancies in all_content[language]:
+    for vaсancies in all_vacancies_from_hh[language]:
         how_much = vaсancies['found']
         vacancies_found.update({language: how_much})
     return vacancies_found
 
 
-def get_salaries(all_content, language):
+def get_salaries(all_vacancies_from_hh, language):
     all_salaries = {}
     salaries = []
-    for items in all_content[language]:
+    for items in all_vacancies_from_hh[language]:
         items = items['items']
         for salary in items:
             if salary['salary'] is not None:
@@ -87,9 +87,9 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language
 def get_salary_from_hh():
     all_salaries_hh = {}
     for language in global_variables.PROGRAMMING_LANGUAGES:
-        all_content = get_all_content_hh(language)
-        vacancies_found = how_much_vacancies(all_content, language)
-        all_salaries = get_salaries(all_content, language)
+        all_vacancies_from_hh = get_all_content_hh(language)
+        vacancies_found = how_much_vacancies(all_vacancies_from_hh, language)
+        all_salaries = get_salaries(all_vacancies_from_hh, language)
         avarage_for_lang = get_avg_salary(all_salaries, language)
         all_salaries_hh.update(predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language))
     return all_salaries_hh
