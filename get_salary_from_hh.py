@@ -32,12 +32,12 @@ def get_salaries(all_vacancies_from_hh, language):
     all_salaries = {}
     vacancies_found = {}
     salaries = []
-    for items in all_vacancies_from_hh[language]:
-        how_much = items['found']
+    for vacancies in all_vacancies_from_hh[language]:
+        how_much = vacancies['found']
         vacancies_found[language] = how_much
-        items = items['items']
-        for salary in items:
-            if salary['salary'] is not None:
+        vacancies = vacancies['items']
+        for salary in vacancies:
+            if salary['salary']:
                 salary = salary['salary']
                 salaries.append(salary)
                 all_salaries[language] = salaries
@@ -47,15 +47,15 @@ def get_salaries(all_vacancies_from_hh, language):
 def get_avg_salary(all_salaries, language):
     avarage_for_lang = {}
     average_salaries = []
-    for el in all_salaries[language]:
-        if el['currency'] == 'RUR' and el['from'] and el['to']:
-            avg_salary = (el['from'] + el['to']) / 2
+    for salary in all_salaries[language]:
+        if salary['currency'] == 'RUR' and salary['from'] and salary['to']:
+            avg_salary = (salary['from'] + salary['to']) / 2
             average_salaries.append(avg_salary)
-        elif el['from']:
-            avg_salary = el['from'] * 1.2
+        elif salary['from']:
+            avg_salary = salary['from'] * 1.2
             average_salaries.append(avg_salary)
-        elif el['to']:
-            avg_salary = el['to'] * 0.8
+        elif salary['to']:
+            avg_salary = salary['to'] * 0.8
             average_salaries.append(avg_salary)
     average_calculation = int(sum(average_salaries) / len(average_salaries))
     avarage_for_lang[language] = average_calculation
