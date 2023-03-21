@@ -18,14 +18,14 @@ def get_all_vacancies_hh(language):
         'per_page': 100,
     }
     for page in count(0):
-        params.update({"page": page})
+        params["page"] = page
         response = requests.get(hh_api_url, params=params)
         response.raise_for_status()
         vacancies = response.json()
         if page == vacancies['pages'] - 1:
             break
         page_with_salary.append(vacancies)
-        all_vacancies_from_hh.update({language: page_with_salary})
+        all_vacancies_from_hh[language] = page_with_salary
     return all_vacancies_from_hh
 
 
@@ -33,7 +33,7 @@ def how_much_vacancies(all_vacancies_from_hh, language):
     vacancies_found = {}
     for vaсancies in all_vacancies_from_hh[language]:
         how_much = vaсancies['found']
-        vacancies_found.update({language: how_much})
+        vacancies_found[language] = how_much
     return vacancies_found
 
 
@@ -46,7 +46,7 @@ def get_salaries(all_vacancies_from_hh, language):
             if salary['salary'] is not None:
                 salary = salary['salary']
                 salaries.append(salary)
-                all_salaries.update({language: salaries})
+                all_salaries[language] = salaries
     return all_salaries
 
 
@@ -64,7 +64,7 @@ def get_avg_salary(all_salaries, language):
             avg_salary = el['to'] * 0.8
             average_salaries.append(avg_salary)
     average_calculation = int(sum(average_salaries) / len(average_salaries))
-    avarage_for_lang.update({language: average_calculation})
+    avarage_for_lang[language] = average_calculation
     return avarage_for_lang
 
 
@@ -74,7 +74,7 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language
     vacancies_processed = {}
     average_salary.update(avarage_for_lang)
     value_of_vacancy = len(all_salaries[language])
-    vacancies_processed.update({language: value_of_vacancy})
+    vacancies_processed[language] = value_of_vacancy
     salaries_for_each_language.update(
         {
             language:
