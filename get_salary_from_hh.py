@@ -8,11 +8,13 @@ def get_all_vacancies_hh(language):
     all_vacancies_from_hh = {}
     hh_api_url = 'https://api.hh.ru/vacancies/'
     page_with_salary = []
+    moscow = 1
+    month = 30
     params = {
         'specializations': 'программист',
         'text': language,
-        'area': '1',
-        'period': '30',
+        'area': moscow,
+        'period': month,
         'per_page': 100,
     }
     for page in count(0):
