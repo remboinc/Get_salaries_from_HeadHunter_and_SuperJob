@@ -46,22 +46,6 @@ def get_all_vacancies_sj(apikey, language):
     return all_vacancies, vacancies_found
 
 
-def collect_all_salaries(all_pages, vacancies_found, language, avg_for_lang):
-    salaries_for_each_language = {}
-    vacancies_processed = {}
-    response_len = len(all_pages[language])
-    vacancies_processed[language] = response_len
-    salaries_for_each_language.update(
-        {
-            language:
-                {'vacancies_found': vacancies_found[language],
-                 'vacancies_processed': vacancies_processed[language],
-                 'average_salary': avg_for_lang[language]},
-        }
-    )
-    return salaries_for_each_language
-
-
 def get_salary_from_sj():
     load_dotenv()
     apikey = os.getenv('SJ_SECRET_KEY')
@@ -71,5 +55,16 @@ def get_salary_from_sj():
         all_pages, vacancies_found = get_all_vacancies_sj(apikey, language)
         average_salaries = predict_rub_salary_for_superjob(all_pages, language)
         avg_for_lang = get_avg_for_lang(average_salaries, language)
-        all_salaries_sj.update(collect_all_salaries(all_pages, vacancies_found, language, avg_for_lang))
+
+        vacancies_processed = {}
+        response_len = len(all_pages[language])
+        vacancies_processed[language] = response_len
+        all_salaries_sj.update(
+            {
+                language:
+                    {'vacancies_found': vacancies_found[language],
+                     'vacancies_processed': vacancies_processed[language],
+                     'average_salary': avg_for_lang[language]},
+            }
+        )
     return all_salaries_sj
