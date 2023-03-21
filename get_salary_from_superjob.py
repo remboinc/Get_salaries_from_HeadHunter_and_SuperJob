@@ -2,6 +2,7 @@ import os
 from itertools import count
 import requests
 from dotenv import load_dotenv
+import global_variables
 
 
 def predict_rub_salary_for_superjob(all_pages, language):
@@ -74,10 +75,9 @@ def collect_all_salaries(all_pages, vacancies_found, language, avg_for_lang):
 def main():
     load_dotenv()
     apikey = os.getenv('SJ_SECRET_KEY')
-    PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
 
     all_salaries_sj = {}
-    for language in PROGRAMMING_LANGUAGES:
+    for language in global_variables.PROGRAMMING_LANGUAGES:
         all_pages, vacancies_found = get_all_pages_sj(apikey, language)
         average_salaries = predict_rub_salary_for_superjob(all_pages, language)
         avg_for_lang = get_avg_for_lang(average_salaries, language)

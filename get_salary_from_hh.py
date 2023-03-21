@@ -1,5 +1,6 @@
 from itertools import count
 import requests
+import global_variables
 
 def get_all_content_hh(language):
     all_content = {}
@@ -82,9 +83,8 @@ def predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language
 
 
 def main():
-    PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
     all_salaries_hh = {}
-    for language in PROGRAMMING_LANGUAGES:
+    for language in global_variables.PROGRAMMING_LANGUAGES:
         all_content = get_all_content_hh(language)
         vacancies_found = how_much_vacancies(all_content, language)
         all_salaries = get_salaries(all_content, language)

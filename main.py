@@ -2,8 +2,6 @@ from terminaltables import AsciiTable
 import get_salary_from_hh
 import get_salary_from_superjob
 
-PROGRAMMING_LANGUAGES = ('Python', 'JavaScript', 'Java', 'Ruby', 'PHP', 'C++', 'C#')
-
 
 def get_salary_table(dict):
     salary_table = []
