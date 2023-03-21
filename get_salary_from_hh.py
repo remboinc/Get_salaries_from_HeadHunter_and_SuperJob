@@ -1,5 +1,4 @@
 from itertools import count
-
 import requests
 import global_variables
 
@@ -29,25 +28,20 @@ def get_all_vacancies_hh(language):
     return all_vacancies_from_hh
 
 
-def how_much_vacancies(all_vacancies_from_hh, language):
-    vacancies_found = {}
-    for vaсancies in all_vacancies_from_hh[language]:
-        how_much = vaсancies['found']
-        vacancies_found[language] = how_much
-    return vacancies_found
-
-
 def get_salaries(all_vacancies_from_hh, language):
     all_salaries = {}
+    vacancies_found = {}
     salaries = []
     for items in all_vacancies_from_hh[language]:
+        how_much = items['found']
+        vacancies_found[language] = how_much
         items = items['items']
         for salary in items:
             if salary['salary'] is not None:
                 salary = salary['salary']
                 salaries.append(salary)
                 all_salaries[language] = salaries
-    return all_salaries
+    return all_salaries, vacancies_found
 
 
 def get_avg_salary(all_salaries, language):
@@ -90,8 +84,7 @@ def get_salary_from_hh():
     all_salaries_hh = {}
     for language in global_variables.PROGRAMMING_LANGUAGES:
         all_vacancies_from_hh = get_all_vacancies_hh(language)
-        vacancies_found = how_much_vacancies(all_vacancies_from_hh, language)
-        all_salaries = get_salaries(all_vacancies_from_hh, language)
+        all_salaries, vacancies_found = get_salaries(all_vacancies_from_hh, language)
         avarage_for_lang = get_avg_salary(all_salaries, language)
         all_salaries_hh.update(predict_rub_salary(avarage_for_lang, all_salaries, vacancies_found, language))
     return all_salaries_hh
