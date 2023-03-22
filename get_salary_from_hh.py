@@ -1,7 +1,7 @@
 from itertools import count
 import requests
 import global_variables
-from get_predict_salary import predict_salary, get_avg_for_lang
+from get_predict_salary import predict_salary
 
 
 def get_all_vacancies_hh(language):
@@ -47,11 +47,12 @@ def get_salaries(all_vacancies_from_hh, language):
 
 def get_avg_salary(all_salaries, language):
     avg_for_lang = {}
-    average_salaries = []
+    average_salary = []
     for salary in all_salaries[language]:
         if salary['currency'] == 'RUR':
-            average_salaries.extend(predict_salary(salary['from'], salary['to']))
-            avg_for_lang.update(get_avg_for_lang(average_salaries, language))
+            average_salary.append(predict_salary(salary['from'], salary['to']))
+    average_calculation = int(sum(average_salary) / len(average_salary))
+    avg_for_lang[language] = average_calculation
     return avg_for_lang
 
 

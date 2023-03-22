@@ -3,17 +3,20 @@ from itertools import count
 import requests
 from dotenv import load_dotenv
 import global_variables
-from get_predict_salary import predict_salary, get_avg_for_lang
+from get_predict_salary import predict_salary
 
 
-def predict_rub_salary_for_superjob(all_pages, language):
-    average_salaries = []
-    for vacancy in all_pages[language]:
+def predict_rub_salary_for_superjob(all_vacancies, language):
+    average_salaries = {}
+    average_salary = []
+    for vacancy in all_vacancies[language]:
         for vacancies in vacancy:
             payment_from = vacancies['payment_from']
             payment_to = vacancies['payment_to']
-            if vacancies['currency'] == 'rub':
-                average_salaries.extend(predict_salary(payment_from, payment_to))
+            if vacancies['currency'] == 'rub' and (payment_from or payment_to != 0):
+                average_salary.append(predict_salary(payment_from, payment_to))
+    average_calculation = int(sum(average_salary) / len(average_salary))
+    average_salaries[language] = average_calculation
     return average_salaries
 
 
@@ -54,8 +57,7 @@ def get_salary_from_sj():
     for language in global_variables.PROGRAMMING_LANGUAGES:
         all_pages, vacancies_found = get_all_vacancies_sj(apikey, language)
         average_salaries = predict_rub_salary_for_superjob(all_pages, language)
-        avg_for_lang = get_avg_for_lang(average_salaries, language)
-
+        print(average_salaries)
         vacancies_processed = {}
         response_len = len(all_pages[language])
         vacancies_processed[language] = response_len
@@ -64,7 +66,7 @@ def get_salary_from_sj():
                 language:
                     {'vacancies_found': vacancies_found[language],
                      'vacancies_processed': vacancies_processed[language],
-                     'average_salary': avg_for_lang[language]},
+                     'average_salary': average_salaries[language]},
             }
         )
     return all_salaries_sj
