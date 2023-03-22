@@ -32,9 +32,9 @@ def get_salaries(all_vacancies_from_hh):
     for vacancies in all_vacancies_from_hh:
         vacancies_found = vacancies['found']
         vacancies = vacancies['items']
-        for salary in vacancies:
-            if salary['salary']:
-                salary = salary['salary']
+        for vacancy in vacancies:
+            if vacancy['salary']:
+                salary = vacancy['salary']
                 all_salaries.append(salary)
     return all_salaries, vacancies_found
 

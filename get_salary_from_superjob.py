@@ -55,7 +55,7 @@ def get_salary_from_sj(apikey):
                 language:
                     {'vacancies_found': vacancies_found,
                      'vacancies_processed': vacancies_processed,
-                     'average_salary': average_salaries},
+                     'average_salary': average_salaries, }
             }
         )
     return all_salaries_sj

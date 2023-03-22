@@ -1,12 +1,11 @@
 import os
-
 from dotenv import load_dotenv
 from terminaltables import AsciiTable
 from get_salary_from_hh import get_salary_from_hh
 from get_salary_from_superjob import get_salary_from_sj
 
 
-def get_salary_table(dict):
+def get_salary_table(vacancies):
     salary_table = []
     table_headers = [
         'Язык программирования',
@@ -15,14 +14,14 @@ def get_salary_table(dict):
         'Средняя зарплата',
     ],
     salary_table.extend(table_headers)
-    for lang, statistics in dict.items():
-        temp_data = [[
+    for lang, statistics in vacancies.items():
+        job_table = [[
             lang,
             statistics.get('vacancies_found'),
             statistics.get('vacancies_processed'),
             statistics.get('average_salary'),
         ]]
-        salary_table.extend(temp_data)
+        salary_table.extend(job_table)
     return salary_table
 
 
