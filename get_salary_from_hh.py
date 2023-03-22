@@ -5,9 +5,8 @@ from get_predict_salary import predict_salary
 
 
 def get_all_vacancies_hh(language):
-    all_vacancies_from_hh = {}
+    all_vacancies_from_hh = []
     hh_api_url = 'https://api.hh.ru/vacancies/'
-    page_with_salary = []
     moscow = 1
     month = 30
     params = {
@@ -24,35 +23,28 @@ def get_all_vacancies_hh(language):
         vacancies = response.json()
         if page == vacancies['pages'] - 1:
             break
-        page_with_salary.append(vacancies)
-        all_vacancies_from_hh[language] = page_with_salary
+        all_vacancies_from_hh.append(vacancies)
     return all_vacancies_from_hh
 
 
-def get_salaries(all_vacancies_from_hh, language):
-    all_salaries = {}
-    vacancies_found = {}
-    salaries = []
-    for vacancies in all_vacancies_from_hh[language]:
-        how_much = vacancies['found']
-        vacancies_found[language] = how_much
+def get_salaries(all_vacancies_from_hh):
+    all_salaries = []
+    for vacancies in all_vacancies_from_hh:
+        vacancies_found = vacancies['found']
         vacancies = vacancies['items']
         for salary in vacancies:
             if salary['salary']:
                 salary = salary['salary']
-                salaries.append(salary)
-                all_salaries[language] = salaries
+                all_salaries.append(salary)
     return all_salaries, vacancies_found
 
 
-def get_avg_salary(all_salaries, language):
-    avg_for_lang = {}
+def get_avg_salary(all_salaries):
     average_salary = []
-    for salary in all_salaries[language]:
+    for salary in all_salaries:
         if salary['currency'] == 'RUR':
             average_salary.append(predict_salary(salary['from'], salary['to']))
-    average_calculation = int(sum(average_salary) / len(average_salary))
-    avg_for_lang[language] = average_calculation
+    avg_for_lang = int(sum(average_salary) / len(average_salary))
     return avg_for_lang
 
 
@@ -60,19 +52,15 @@ def get_salary_from_hh():
     all_salaries_hh = {}
     for language in global_variables.PROGRAMMING_LANGUAGES:
         all_vacancies_from_hh = get_all_vacancies_hh(language)
-        all_salaries, vacancies_found = get_salaries(all_vacancies_from_hh, language)
-        avg_for_lang = get_avg_salary(all_salaries, language)
-        average_salary = {}
-        vacancies_processed = {}
-        average_salary.update(avg_for_lang)
-        value_of_vacancy = len(all_salaries[language])
-        vacancies_processed[language] = value_of_vacancy
+        all_salaries, vacancies_found = get_salaries(all_vacancies_from_hh)
+        avg_for_lang = get_avg_salary(all_salaries)
+        vacancies_processed = len(all_salaries)
         all_salaries_hh.update(
             {
                 language:
-                    {'vacancies_found': vacancies_found[language],
-                     'vacancies_processed': vacancies_processed[language],
-                     'average_salary': average_salary[language]},
+                    {'vacancies_found': vacancies_found,
+                     'vacancies_processed': vacancies_processed,
+                     'average_salary': avg_for_lang},
             }
         )
     return all_salaries_hh

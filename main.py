@@ -1,3 +1,6 @@
+import os
+
+from dotenv import load_dotenv
 from terminaltables import AsciiTable
 from get_salary_from_hh import get_salary_from_hh
 from get_salary_from_superjob import get_salary_from_sj
@@ -24,7 +27,10 @@ def get_salary_table(dict):
 
 
 def main():
-    statistics_sj = get_salary_table(get_salary_from_sj())
+    load_dotenv()
+
+    apikey = os.getenv('SJ_SECRET_KEY')
+    statistics_sj = get_salary_table(get_salary_from_sj(apikey))
     statistics_hh = get_salary_table(get_salary_from_hh())
 
     sj_table = AsciiTable(statistics_sj, title='SuperJob Moscow')
