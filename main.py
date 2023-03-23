@@ -6,14 +6,12 @@ from get_salary_from_superjob import get_salary_from_sj
 
 
 def get_salary_table(vacancies):
-    salary_table = []
-    table_headers = [
+    salary_table = [[
         'Язык программирования',
         'Вакансий найдено',
         'Вакансий обработано',
         'Средняя зарплата',
-    ],
-    salary_table.extend(table_headers)
+    ]]
     for lang, statistics in vacancies.items():
         job_table = [[
             lang,
