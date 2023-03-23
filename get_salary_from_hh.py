@@ -42,10 +42,11 @@ def get_salaries(all_vacancies_from_hh):
 def get_avg_salary(all_salaries):
     average_salary = []
     for salary in all_salaries:
-        if salary['currency'] == 'RUR':
+        if salary['currency'] == 'RUR' and (salary['from'] or salary['to']):
             average_salary.append(predict_salary(salary['from'], salary['to']))
-    avg_for_lang = int(sum(average_salary) / len(average_salary))
-    return avg_for_lang
+    if average_salary:
+        avg_for_lang = int(sum(average_salary) / len(average_salary))
+        return avg_for_lang
 
 
 def get_salary_from_hh():
@@ -55,12 +56,7 @@ def get_salary_from_hh():
         all_salaries, vacancies_found = get_salaries(all_vacancies_from_hh)
         avg_for_lang = get_avg_salary(all_salaries)
         vacancies_processed = len(all_salaries)
-        all_salaries_hh.update(
-            {
-                language:
-                    {'vacancies_found': vacancies_found,
-                     'vacancies_processed': vacancies_processed,
-                     'average_salary': avg_for_lang},
-            }
-        )
+        all_salaries_hh[language] = {'vacancies_found': vacancies_found,
+                                     'vacancies_processed': vacancies_processed,
+                                     'average_salary': avg_for_lang, }
     return all_salaries_hh

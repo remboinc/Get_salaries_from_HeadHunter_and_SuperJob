@@ -11,10 +11,11 @@ def predict_rub_salary_for_superjob(page_with_salary):
         for vacancies in vacancy:
             payment_from = vacancies['payment_from']
             payment_to = vacancies['payment_to']
-            if vacancies['currency'] == 'rub' and (payment_from or payment_to != 0):
+            if vacancies['currency'] == 'rub' and (payment_from or payment_to):
                 average_salary.append(predict_salary(payment_from, payment_to))
-    average_salaries = int(sum(average_salary) / len(average_salary))
-    return average_salaries
+    if average_salary:
+        average_salaries = int(sum(average_salary) / len(average_salary))
+        return average_salaries
 
 
 def get_all_vacancies_sj(apikey, language):
@@ -50,14 +51,9 @@ def get_salary_from_sj(apikey):
         page_with_salary, vacancies_found = get_all_vacancies_sj(apikey, language)
         average_salaries = predict_rub_salary_for_superjob(page_with_salary)
         vacancies_processed = len(page_with_salary)
-        all_salaries_sj.update(
-            {
-                language:
-                    {'vacancies_found': vacancies_found,
-                     'vacancies_processed': vacancies_processed,
-                     'average_salary': average_salaries, }
-            }
-        )
+        all_salaries_sj[language] = {'vacancies_found': vacancies_found,
+                                     'vacancies_processed': vacancies_processed,
+                                     'average_salary': average_salaries, }
     return all_salaries_sj
 
 
